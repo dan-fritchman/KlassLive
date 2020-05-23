@@ -1,0 +1,82 @@
+{
+  "name": "klasslive-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "build": "babel -s -d build/ src/ ",
+    "docker-cli": "babel-node src/runners/docker-cli.js -- ",
+    "docker-build": "docker build . -t gcr.io/crucial-minutia-227720/klasslive-api",
+    "docker-push": "docker push gcr.io/crucial-minutia-227720/klasslive-api:latest ",
+    "dockerize": "yarn docker-build && yarn docker-push",
+    "rolling-replace": "gcloud compute instance-groups managed rolling-action replace klasslive-instance-group-europe-1 --zone europe-west1-b",
+    "cloudbuild": "gcloud builds submit",
+    "cloudbuild-async": "gcloud builds submit --async",
+    "deploy": "yarn cloudbuild && yarn rolling-replace",
+    "now": "vercel",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
+    "@types/mongoose": "^5.5.7",
+    "apollo-server": "latest",
+    "apollo-server-express": "1",
+    "apollo-server-micro": "^2.13.1",
+    "body-parser": "^1.19.0",
+    "casual": "^1.5.3",
+    "cors": "^2.7.1",
+    "dataloader": "^1.4.0",
+    "docker-names": "^1.1.1",
+    "dockerode": "^2.5.8",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.0",
+    "firebase-admin": "^8.2.0",
+    "global": "^4.4.0",
+    "graphql": "^14.3.0",
+    "graphql-import": "^0.7.1",
+    "graphql-tag": "^2.10.3",
+    "graphql-tools": "^4.0.4",
+    "graphql-type-json": "^0.3.0",
+    "micro": "^9.3.4",
+    "micro-cors": "^0.1.1",
+    "mongoose": "^5.6.3",
+    "request-promise": "^4.0.2",
+    "stripe": "^7.10.0",
+    "twilio": "^3.37.0",
+    "vercel": "^19.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
+    "@babel/node": "^7.5.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/preset-env": "^7.5.2",
+    "@babel/preset-typescript": "^7.3.3",
+    "babel-plugin-import-graphql": "^2.7.0",
+    "eslint": "^2.4.0",
+    "eslint-config-airbnb": "^6.1.0",
+    "eslint-plugin-import": "^1.1.0",
+    "eslint-plugin-react": "^4.2.3",
+    "jest": "^24.9.0",
+    "nodemon": "^1.9.1"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": [
+      "airbnb/base",
+      "plugin:import/errors"
+    ],
+    "rules": {
+      "no-use-before-define": 0,
+      "arrow-body-style": 0,
+      "dot-notation": 0,
+      "no-console": 0
+    },
+    "env": {
+      "mocha": true
+    }
+  }
+}

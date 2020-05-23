@@ -1,5 +1,6 @@
+
 {
-  "compilerOptions": {
+"compilerOptions": {
     "target": "es5",
     "lib": [
       "dom",
@@ -17,9 +18,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "lib": ["dom", "es6", "es2017", "esnext.asynciterable"]
   },
   "include": [
-    "src"
-  ]
+    "app/src",
+    "api/src"
+  ],
+  "exclude": [ "node_modules" ]
 }
+

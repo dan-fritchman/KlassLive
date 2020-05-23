@@ -1,30 +1,19 @@
 {
-  "name": "hw21.io",
+  "name": "klasslive",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@types/jest": "24.0.11",
-    "@types/node": "11.13.6",
-    "@types/react": "16.8.14",
-    "@types/react-dom": "16.8.4",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8",
-    "typescript": "3.4.4"
+  "dependencies": {},
+  "devDependencies": {
+    "@types/graphql": "^14.2.2",
+    "apollo": "^2.15.0",
+    "concurrently": "^4.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "install": "concurrently --kill-others \"yarn \" \"cd api && yarn \" \"cd app && yarn \" ",
+    "dev": "concurrently --kill-others \"cd api && yarn dev\" \"cd app && yarn dev\" ",
+    "start": "concurrently --kill-others \"cd api && yarn start\" \"cd app && yarn start\" ",
+    "gen": "yarn run apollo codegen:generate --target typescript --outputFlat app/types",
+    "build": "yarn gen && cd app && yarn build",
+    "deploy": "concurrently --kill-others \"cd api && yarn deploy\" \"cd app && yarn deploy\" "
+  }
 }

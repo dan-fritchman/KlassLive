@@ -1,0 +1,232 @@
+## Notebook-Style Schema 
+
+scalar JSON
+
+type Cell {
+    cell_type: String,
+    execution_count: Int,
+    source: String,
+    metadata: JSON,
+    submission: Submission,
+}
+
+type Problem {
+    title: String,
+    desc: String,
+    setup: [Cell]!,
+    prompt: Cell!,
+    solution: Cell!,
+    tests: Cell!,
+}
+
+type KlassMeta {
+    id: String,
+    title: String,
+    owner: User,
+}
+
+input KlassNotebookInput {
+    nbformat: Int,
+    nbformat_minor: Int,
+    metadata: JSON, # FIXME: more detail
+    cells: [JSON], # FIXME: more detail
+}
+
+type KlassNotebook {
+    owner: User,
+    nbformat: Int,
+    nbformat_minor: Int,
+    metadata: JSON, # FIXME: more detail
+    cells: [JSON], # FIXME: more detail
+    num_problems: Int,
+}
+
+type KlassFolded {
+    id: String!,
+    owner: User!,
+    title: String,
+    desc: String,
+    problems: [Problem]!,
+    scratch: [Cell],
+    metadata: JSON,
+    notebookMeta: JSON,
+    runtime: JSON,
+    visibility: Visibility,
+}
+
+input KlassFoldedInput {
+    id: String!,
+    title: String,
+    desc: String,
+    problems: [JSON]!,
+    scratch: [JSON],
+    metadata: JSON,
+    notebookMeta: JSON,
+    runtime: JSON,
+    visibility: Visibility,
+}
+
+input UpdateUser {
+    uid: String!,
+    displayName: String,
+    email: String,
+    photoURL: String,
+}
+
+type User {
+    uid: String!,
+    displayName: String,
+    email: String,
+    photoURL: String,
+    klasses: [KlassFolded],
+    sessions: [UserSession],
+    permissions: JSON,
+}
+
+enum AccessState { NONE, REQUESTED, GRANTED, DENIED }
+enum PaymentState { PAID, UNPAID, FREE }
+enum SessionSetupState { NOT_RUN, RUNNING, FAILING, PASSING }
+enum KlassSessionState { FUTURE, ACTIVE, CLOSED, EXPIRED }
+enum ProblemState { FUTURE, ACTIVE, REVIEW, CLOSED }
+enum Visibility { PUBLIC, PRIVATE }
+enum PayForType { SESSION, KLASS }
+
+type Times{
+    created: String, # FIXME
+    start: String,   # FIXME
+    finish: String,  # FIXME
+    duration: Int,
+}
+
+input TimeInputs{
+    start: String, # FIXME
+    finish: String,# FIXME
+    duration: Int,
+}
+
+input CreateKlassSession {
+    title: String,
+    host_id: String!,
+    klass_id: String!,
+    times: TimeInputs,
+    visibility: Visibility,
+}
+
+input UpdateKlassSessionInfo {
+    id: String!,
+    title: String,
+    times: TimeInputs,
+    visibility: Visibility,
+}
+
+input JoinKlassSession {
+    user_id: String, # FIXME: remove. Made optional for now.
+    klass_session_id: String!,
+}
+
+type KlassSession {
+    id: String!,
+    title: String,
+    host: User!,
+    user_sessions: [UserSession]!,
+    klass: KlassFolded!,
+    session_state: KlassSessionState!,
+    times: Times,
+    problem_num: Int!,
+    problem_state: ProblemState!,
+    payment_state: PaymentState,
+    setup_state: SessionSetupState,
+    visibility: Visibility,
+}
+
+type Scores {
+    problems: [Int]!,
+    total: Int,
+}
+
+type UserSession {
+    id: String!,
+    user: User!,
+    klass_session: KlassSession!,
+    state: String,
+    responses: [Submission]!
+    scores: Scores!,
+}
+
+input ProblemSubmission {
+    user_session_id: String!,
+    klass_session_id: String!,
+    problem_num: Int!,
+    klass: KlassFoldedInput,
+    source: String!,
+}
+
+enum GradingState { IN_PROGRESS, COMPLETE }
+
+type Submission {
+    id: String!,
+    klass_id: String,
+    user_session_id: String,
+    klass_session_id: String,
+    problem_num: Int!,
+    state: GradingState!,
+    score: Int,
+    source: String,
+    output: String,
+    errs: String,
+}
+
+type ProblemCheck {
+    klass_id: String!,
+    problem_num: Int!,
+    state: GradingState!,
+    score: Int,
+    source: String,
+    output: String,
+    errs: String,
+}
+
+type KlassSetupCheck {
+    id: String!,
+    state: SessionSetupState,
+    build: SessionSetupState,
+    prompts: [ProblemCheck],
+    solutions: [ProblemCheck],
+}
+
+
+# Main Query & Mutation Types 
+type Query {
+    klass(id:String): KlassNotebook,
+    klasses: [KlassFolded],
+    klass_folded(id:String): KlassFolded,
+    klass_session(id:String): KlassSession,
+    klass_sessions: [KlassSession],
+    klass_setup_check(id:String): KlassSetupCheck,
+    user(id:String): User,
+    user_session(id:String): UserSession,
+    user_sessions: [UserSession],
+    submission(id:String): Submission,
+    payment_amount(for_type: PayForType, id: String): Int,
+    health: Boolean,
+    canary: Int
+}
+
+type Mutation {
+    createKlass: KlassFolded,
+    saveKlass(klass:KlassFoldedInput): Boolean,
+    updateKlass(klass:KlassNotebookInput): Boolean,
+    forkKlass(klass_id:String): KlassFolded,
+    createKlassSession(data:CreateKlassSession): KlassSession,
+    joinKlassSession(data:JoinKlassSession): UserSession,
+    nextProblem(id:String): KlassSession,
+    updateProblemNumber(id:String, num:Int): KlassSession,
+    submission(data:ProblemSubmission): Submission,
+    updateUser(data:UpdateUser): User,
+    updateKlassSessionInfo(data: UpdateKlassSessionInfo): KlassSession,
+    updateKlassSessionState(klass_session_id: String, state: KlassSessionState): KlassSession,
+    payment_token(for_type: PayForType, id: String, token: String): Boolean,
+    check_solution(klass:KlassFoldedInput, problem_num:Int): Submission,
+    check_prompt(klass:KlassFoldedInput, problem_num:Int): Submission,
+    permission_request(permissionTypes:[String]): User,
+}
