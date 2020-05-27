@@ -42,7 +42,7 @@
     "graphql-type-json": "^0.3.0",
     "micro": "^9.3.4",
     "micro-cors": "^0.1.1",
-    "mongoose": "^5.6.3",
+    "mongoose": "^5.7.5",
     "request-promise": "^4.0.2",
     "stripe": "^7.10.0",
     "twilio": "^3.37.0",
