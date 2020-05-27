@@ -2,7 +2,9 @@
   "name": "klasslive",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "yarn": "^1.22.0"
+  },
   "devDependencies": {
     "@types/graphql": "^14.2.2",
     "apollo": "^2.15.0",
