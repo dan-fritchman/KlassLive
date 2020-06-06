@@ -1777,10 +1777,10 @@ apollo-server-caching@^0.5.1:
   dependencies:
     lru-cache "^5.0.0"
 
-apollo-server-core@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-2.14.0.tgz#40175b6ec409bb16864bb51a97bfe7b1048d5c98"
-  integrity sha512-J54plbCQcFPJsjQpDmxU+V485Z34quTD7Q+sL6Nhlayd+shpKcYkfdXTuKiatG3JmSlixBrjE8a0YjuknnR49Q==
+apollo-server-core@^2.14.0, apollo-server-core@^2.14.2:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-2.14.2.tgz#4ab055b96b8be7821a726c81e8aa412deb7f3644"
+  integrity sha512-8G6Aoz+k+ecuQco1KNLFbMrxhe/8uR4AOaOYEvT/N5m/6lrkPYzvBAxbpRIub5AxEwpBPcIrI452rR3PD9DItA==
   dependencies:
     "@apollographql/apollo-tools" "^0.4.3"
     "@apollographql/graphql-playground-html" "1.6.24"
@@ -1840,14 +1840,14 @@ apollo-server-express@^2.14.0:
     subscriptions-transport-ws "^0.9.16"
     type-is "^1.6.16"
 
-apollo-server-micro@^2.13.1:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/apollo-server-micro/-/apollo-server-micro-2.14.0.tgz#91cdcebc2212e1acffab81591f3e9b71117c9c18"
-  integrity sha512-mYZ6FePbW+Y3H508zgUikV3fIaXCCYHsfExjftc7cFmQ0CtAYrdmWiH03vDIiZJpQLAekiOckp8qct/duqaTIw==
+apollo-server-micro@^2.14.2:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/apollo-server-micro/-/apollo-server-micro-2.14.2.tgz#d4c735af26c82a3b0763bced054e6ff8d969231b"
+  integrity sha512-3r++AYlWwzFHFj8y8SX3mGuv6aaPy4QCZ5dVtNokORl2TabL4587ccU5OHQsqOObK/cypWDG4YhpkeKeC4xKsA==
   dependencies:
     "@apollographql/graphql-playground-html" "1.6.24"
     accept "^3.0.2"
-    apollo-server-core "^2.14.0"
+    apollo-server-core "^2.14.2"
     apollo-server-types "^0.5.0"
     micro "^9.3.2"
 
