@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
-    "apollo-server": "^2.14.0",
+    "apollo-server": "^2.14.2",
     "apollo-server-micro": "^2.13.1",
     "dataloader": "^1.4.0",
     "docker-names": "^1.1.1",
